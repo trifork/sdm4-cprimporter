@@ -1,4 +1,4 @@
-CREATE TABLE PakningskombinationerUdenPriser (
+CREATE TABLE IF NOT EXISTS PakningskombinationerUdenPriser (
     PakningskombinationerUdenPriserPID BIGINT(15) AUTO_INCREMENT NOT NULL PRIMARY KEY,
     
     VarenummerOrdineret BIGINT(12) NOT NULL, -- ID Column
