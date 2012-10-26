@@ -1,4 +1,4 @@
-CREATE TABLE Person (
+ CREATE TABLE IF NOT EXISTS Person (
 	PersonPID BIGINT(15) AUTO_INCREMENT NOT NULL PRIMARY KEY,
 
 	CPR CHAR(10) NOT NULL,
@@ -42,13 +42,13 @@ CREATE TABLE Person (
 	INDEX (CPR, ValidTo, ValidFrom, Fornavn, Mellemnavn, Efternavn, Foedselsdato)
 ) ENGINE=InnoDB COLLATE=utf8_bin;
 
-CREATE TABLE PersonIkraft (
+ CREATE TABLE IF NOT EXISTS PersonIkraft (
 	PersonIkraftPID BIGINT(15) AUTO_INCREMENT NOT NULL PRIMARY KEY	,
 
 	IkraftDato DATETIME NOT NULL
 ) ENGINE=InnoDB COLLATE=utf8_bin;
 
-CREATE TABLE UmyndiggoerelseVaergeRelation (
+ CREATE TABLE IF NOT EXISTS UmyndiggoerelseVaergeRelation (
 	UmyndiggoerelseVaergeRelationPID BIGINT(15) AUTO_INCREMENT NOT NULL PRIMARY KEY,
 
 	Id VARCHAR(21) NOT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE UmyndiggoerelseVaergeRelation (
 	INDEX (Id, ValidTo, ValidFrom)
 ) ENGINE=InnoDB COLLATE=utf8_bin;
 
-CREATE TABLE ForaeldreMyndighedRelation (
+ CREATE TABLE IF NOT EXISTS ForaeldreMyndighedRelation (
 	ForaeldreMyndighedRelationPID BIGINT(15) AUTO_INCREMENT NOT NULL PRIMARY KEY,
 
 	Id VARCHAR(21) NOT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE ForaeldreMyndighedRelation (
 	INDEX (Id, ValidTo, ValidFrom)
 ) ENGINE=InnoDB COLLATE=utf8_bin;
 
-CREATE TABLE BarnRelation (
+ CREATE TABLE IF NOT EXISTS BarnRelation (
 	BarnRelationPID BIGINT(15) AUTO_INCREMENT NOT NULL PRIMARY KEY,
 
 	Id CHAR(21) NOT NULL,
@@ -110,7 +110,7 @@ CREATE TABLE BarnRelation (
 	INDEX (Id, ValidTo, ValidFrom)
 ) ENGINE=InnoDB COLLATE=utf8_bin;
 
-CREATE TABLE ChangesToCPR (
+ CREATE TABLE IF NOT EXISTS ChangesToCPR (
 	CPR CHAR(10) PRIMARY KEY,
 	ModifiedDate TIMESTAMP NOT NULL,
 	INDEX (ModifiedDate)
