@@ -9,7 +9,7 @@
 
     <artifactId>cprimporter</artifactId>
     <packaging>war</packaging>
-    <version>4.3</version>
+    <version>4.4-SNAPSHOT</version>
 
    <distributionManagement>
         <repository>
@@ -39,7 +39,7 @@
         <url>scm:git:git@github.com:trifork/sdm4-cprimporter</url>
         <connection>scm:git:git@github.com:trifork/sdm4-cprimporter.git</connection>
         <developerConnection>scm:git:git@github.com:trifork/sdm4-cprimporter.git</developerConnection>
-      <tag>cprimporter-4.3</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <issueManagement>
