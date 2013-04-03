@@ -94,6 +94,8 @@ public class CPRParser implements Parser {
 
         SLALogItem slaLogItem = slaLogger.createLogItem("CPRImport", "All Files");
         try {
+            // Make sure transaction time is reset on import
+            persister.resetTransactionTime();
 
             // Check that the sequence is kept.
 

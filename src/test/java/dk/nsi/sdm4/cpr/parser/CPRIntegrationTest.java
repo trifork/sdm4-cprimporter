@@ -148,6 +148,22 @@ public class CPRIntegrationTest {
 		importFile("data/endRecords/D100315.L431101");
 	}
 
+    @Test
+    public void updatesModifiedDateCorrectly() throws Exception {
+        importFile("data/testCPR1/D100314.L431101");
+        long cnt = jdbcTemplate.queryForLong("SELECT COUNT(1) FROM Person");
+        assertEquals(1, cnt);
+        Timestamp modified1 = jdbcTemplate.queryForObject("SELECT ModifiedDate FROM Person", Timestamp.class);
+
+        Thread.sleep(1000);
+        importFile("data/D100315.L431101");
+        cnt = jdbcTemplate.queryForLong("SELECT COUNT(1) FROM Person");
+        assertEquals(2, cnt);
+        Timestamp modified2 = jdbcTemplate.queryForObject(
+                "SELECT ModifiedDate FROM Person ORDER BY ModifiedDate DESC LIMIT 1", Timestamp.class);
+        assertFalse(modified1.equals(modified2));
+    }
+
 	@Test
 	public void canImportPersonNavnebeskyttelse() throws Exception {
 		importFile("data/testCPR1/D100314.L431101");
