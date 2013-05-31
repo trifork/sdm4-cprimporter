@@ -365,7 +365,7 @@ public class CPRIntegrationTest {
 		File datasetDir = tmpDir.newFolder();
 		FileUtils.copyURLToFile(resource, new File(datasetDir, lastPathSegment(filePath)));
 
-		parser.process(datasetDir);
+		parser.process(datasetDir, "");
 	}
 
 	private String lastPathSegment(String filePath) {

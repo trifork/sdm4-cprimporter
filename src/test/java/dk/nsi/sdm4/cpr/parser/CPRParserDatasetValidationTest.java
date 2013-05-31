@@ -50,7 +50,7 @@ public class CPRParserDatasetValidationTest {
 	@Test()
 	public void shouldComplainIfPassedNull() throws IOException {
 		try {
-			parser.process(null);
+			parser.process(null, "");
 		} catch (NullPointerException expectedException) {
 			assertTrue(expectedException.getMessage().contains("dataset"));
 			return;
@@ -63,7 +63,7 @@ public class CPRParserDatasetValidationTest {
 	public void shouldComplainIfPassedFileInsteadOfDirectory() throws IOException {
 		File aFile = tmpDir.newFile();
 		try {
-			parser.process(aFile);
+			parser.process(aFile, "");
 		} catch (IllegalStateException expectedException) {
 			assertTrue(expectedException.getMessage().contains("not a directory"));
 			assertTrue("Error message contains path to file", expectedException.getMessage().contains(aFile.getAbsolutePath()));
@@ -78,7 +78,7 @@ public class CPRParserDatasetValidationTest {
 		File aDirectory = tmpDir.newFolder();
 		aDirectory.setReadable(false);
 		try {
-			parser.process(aDirectory);
+			parser.process(aDirectory, "");
 		} catch (IllegalStateException expectedException) {
 			assertTrue(expectedException.getMessage().contains("not readable"));
 			assertTrue("Error message contains path to directory", expectedException.getMessage().contains(aDirectory.getAbsolutePath()));

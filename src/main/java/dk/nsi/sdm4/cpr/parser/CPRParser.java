@@ -80,7 +80,7 @@ public class CPRParser implements Parser {
 	JdbcTemplate jdbcTemplate;
 
     @Override
-    public void process(File dataset) throws ParserException {
+    public void process(File dataset, String identifier) throws ParserException {
 	    Preconditions.checkNotNull(dataset, "dataset is null");
 	    Preconditions.checkState(dataset.isDirectory(), "dataset " + dataset.getAbsolutePath() + " is not a directory");
 	    Preconditions.checkState(dataset.canRead(), "dataset directory" + dataset.getAbsolutePath() + " is not readable");
@@ -91,8 +91,9 @@ public class CPRParser implements Parser {
                 throw new ParserException("File " + personFile.getAbsolutePath() + " is not a valid CPR file. Nothing will be imported from the fileset.");
             }
         }
-
-        SLALogItem slaLogItem = slaLogger.createLogItem("CPRImport", "All Files");
+        SLALogItem slaLogItem = slaLogger.createLogItem(getHome()+".process", "SDM4."+getHome()+".process");
+        slaLogItem.setMessageId(identifier);
+        slaLogItem.addCallParameter(Parser.SLA_INPUT_NAME, dataset.getAbsolutePath());
         try {
             // Make sure transaction time is reset on import
             persister.resetTransactionTime();
@@ -100,6 +101,7 @@ public class CPRParser implements Parser {
             // Check that the sequence is kept.
 
             ArrayList<String> cprWithChanges = Lists.newArrayList();
+            long processed = 0;
 
 	        for (File personFile : input) {
 		        SLALogItem slaLogItemFile = slaLogger.createLogItem("CPRImport of file", personFile.getName());
@@ -124,6 +126,7 @@ public class CPRParser implements Parser {
 		        classesObservedByPVIT.add(NavneBeskyttelse.class);
 
 		        for (Dataset<? extends TemporalEntity> changesDataset : changes.getDatasets()) {
+                    processed += changesDataset.size();
 			        persister.persistDeltaDataset(changesDataset);
 
 			        // The GOS/CPR component requires a table with
@@ -172,7 +175,7 @@ public class CPRParser implements Parser {
             for (String cpr : cprWithChanges) {
 	            jdbcTemplate.update("REPLACE INTO ChangesToCPR (CPR, ModifiedDate) VALUES (?,?)", cpr, modifiedDate);
             }
-
+            slaLogItem.addCallParameter(Parser.SLA_RECORDS_PROCESSED_MAME, ""+processed);
             slaLogItem.setCallResultOk();
             slaLogItem.store();
 
