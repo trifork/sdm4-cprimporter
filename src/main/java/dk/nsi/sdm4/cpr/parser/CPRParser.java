@@ -29,6 +29,7 @@ package dk.nsi.sdm4.cpr.parser;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
@@ -114,7 +115,12 @@ public class CPRParser implements Parser {
 
 			        if (previousVersion == null) {
 				        logger.warn("Didn't find any previous versions of CPR. Asuming an initial import and skipping sequence checks.");
-			        }
+			        } else {
+                        Date previousFileValidFrom = changes.getPreviousFileValidFrom();
+                        if(!comparePreviousVersion(previousFileValidFrom, previousVersion)) {
+                            throw new ParserException("Forrige ikrafttraedelsesdato i personregisterfilen stemmer ikke overens med forrige ikrafttraedelsesdato i databasen.");
+                        }
+                    }
 		        }
 
 		        // All these entities affect the person table.
@@ -188,7 +194,14 @@ public class CPRParser implements Parser {
         }
     }
 
-	private void markAsFailed(SLALogItem slaLogItem, Exception e) {
+    private boolean comparePreviousVersion(Date previousInFile, Date previousInDb) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        String prevInFile = sdf.format(previousInFile);
+        String prevInDb = sdf.format(previousInDb);
+        return prevInDb.equals(prevInFile);
+    }
+
+    private void markAsFailed(SLALogItem slaLogItem, Exception e) {
 		slaLogItem.setCallResultError("CPR Import failed - Cause: " + e.getMessage());
 		slaLogItem.store();
 	}

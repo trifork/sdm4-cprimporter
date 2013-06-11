@@ -9,3 +9,6 @@
 * SDM-5 SLA-log fra SDM4-importere følger ikke standarden
 * Tilføjet kopi register view, så kopi register service maps nu bliver oprettet automatisk
 * Tilføjet indeks på ModifiedDate,PID det er bedst for kopi register servicen
+
+## cprimporter 4.6
+* Rettet: SDMCPRIMP-1 CPR-importer laver ikke out-of-sequence check ved import

@@ -49,19 +49,25 @@ public class CPRDataset
 	);
 
 	private Date validFrom;
+    private Date previousFileValidFrom;
 
-	public Date getValidFrom()
-	{
+	public Date getValidFrom() {
 		return validFrom;
 	}
 
-	public void setValidFrom(Date validFrom)
-	{
+	public void setValidFrom(Date validFrom) {
 		this.validFrom = validFrom;
 	}
 
-	public <T extends CPREntity> void addEntity(T entity)
-	{
+    public Date getPreviousFileValidFrom() {
+        return previousFileValidFrom;
+    }
+
+    public void setPreviousFileValidFrom(Date previousFileValidFrom) {
+        this.previousFileValidFrom = previousFileValidFrom;
+    }
+
+	public <T extends CPREntity> void addEntity(T entity) {
 		entity.setDataset(this);
 		for (Dataset<? extends TemporalEntity> dataset : datasets)
 		{
@@ -74,14 +80,12 @@ public class CPRDataset
 		}
 	}
 
-	public List<Dataset<? extends CPREntity>> getDatasets()
-	{
+	public List<Dataset<? extends CPREntity>> getDatasets() {
 		return datasets;
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends TemporalEntity> Dataset<T> getDataset(Class<T> entityClass)
-	{
+	public <T extends TemporalEntity> Dataset<T> getDataset(Class<T> entityClass) {
 		for (Dataset<? extends TemporalEntity> dataset : datasets)
 		{
 			if (dataset.getType().equals(entityClass))

@@ -126,12 +126,14 @@ public class CprSingleFileImporter
 
 	void parseLine(int recordType, String line, CPRDataset cpr)
 	{
-		// TODO: Make constants for these magic numbers.
-
 		switch (recordType)
 		{
 		case 0:
 			cpr.setValidFrom(getValidFrom(line));
+            Date forrigeIkraftDato = getForrigeIkraftDato(line);
+            if (forrigeIkraftDato != null) {
+                cpr.setPreviousFileValidFrom(forrigeIkraftDato);
+            }
 			break;
 		case 1:
 			cpr.addEntity(personoplysninger(line));
@@ -479,4 +481,17 @@ public class CprSingleFileImporter
 
 		return date.toDate();
 	}
+
+    private static Date getForrigeIkraftDato(String line) throws ParserException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        if (line.length() >= 25) {
+            String dateFromLine = cut(line, 27, 35);
+            try {
+                return sdf.parse(dateFromLine);
+            } catch (ParseException e) {
+                throw new ParserException("Der opstod en fejl und parsning af FORRIGE ikrafttrædelsesdato for cpr vejregister fil.");
+            }
+        }
+        return null;
+    }
 }
