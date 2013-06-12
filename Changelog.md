@@ -12,3 +12,6 @@
 
 ## cprimporter 4.6
 * Rettet: SDMCPRIMP-1 CPR-importer laver ikke out-of-sequence check ved import
+
+## next version
+*  PakningskombinationerUdenPriser tabel flyttet ud af cprimporter til tasktimporteren hvor den hører hjemme.
